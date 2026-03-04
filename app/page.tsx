@@ -10,6 +10,7 @@ import {
   FloatIn,
   CountUp,
 } from "@/components/ui/motion";
+import { LanguageToggle } from "@/components/layout/LanguageToggle";
 import { ArrowRight, BookOpen, Users, Trophy, Zap, Quote } from "lucide-react";
 
 export default async function HomePage() {
@@ -22,6 +23,7 @@ export default async function HomePage() {
         <div className="max-w-6xl mx-auto w-full flex items-center justify-between">
           <span className="font-bold text-xl text-gray-900">Klass</span>
           <div className="flex items-center gap-3">
+            <LanguageToggle />
             <Button variant="ghost" size="sm" asChild>
               <Link href="/login">{t("nav.login")}</Link>
             </Button>
