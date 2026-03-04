@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { LevelBadge } from "@/components/ui/badge";
@@ -10,6 +12,8 @@ import { Compass } from "lucide-react";
 export default async function LearnerDashboard() {
   const supabase = await createClient();
   const admin = createAdminClient();
+  const t = await getTranslations("Learner");
+  const tl = await getTranslations("Level");
 
   const { data: { user: authUser } } = await supabase.auth.getUser();
   if (!authUser) redirect("/login");
@@ -69,20 +73,20 @@ export default async function LearnerDashboard() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Мои сообщества</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{t("heading")}</h1>
         <p className="text-gray-500 mt-0.5">
-          Привет, {currentUser?.name}! Продолжайте учиться.
+          {t("greeting", { name: currentUser?.name })}
         </p>
       </div>
 
       {/* Communities */}
       {!memberships?.length ? (
         <div className="bg-white border border-gray-100 rounded-xl p-12 text-center space-y-4">
-          <p className="text-gray-400">Вы ещё не вступили ни в одно сообщество</p>
+          <p className="text-gray-400">{t("empty")}</p>
           <Button asChild>
             <Link href="/explore">
               <Compass size={16} />
-              Найти сообщество
+              {t("findCommunity")}
             </Link>
           </Button>
         </div>
@@ -100,22 +104,31 @@ export default async function LearnerDashboard() {
                 key={m.id}
                 className="bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-md transition-shadow"
               >
-                <div className="h-24 bg-gradient-to-br from-blue-100 to-indigo-100" />
+                <div className="h-24 relative bg-gradient-to-br from-blue-100 to-indigo-100 overflow-hidden">
+                  {community.cover_image && (
+                    <Image
+                      src={community.cover_image}
+                      alt={community.name}
+                      fill
+                      className="object-cover"
+                    />
+                  )}
+                </div>
                 <div className="p-4 space-y-3">
                   <div>
                     <h3 className="font-semibold text-gray-900 line-clamp-1">
                       {community.name}
                     </h3>
                     <p className="text-xs text-gray-400 mt-0.5">
-                      от {community.creator.name}
+                      {t("by")} {community.creator.name}
                     </p>
                   </div>
 
                   {prog.total > 0 && (
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>Прогресс</span>
-                        <span>{prog.completed}/{prog.total} уроков</span>
+                        <span>{t("progress")}</span>
+                        <span>{t("lessonsProgress", { done: prog.completed, total: prog.total })}</span>
                       </div>
                       <Progress value={progressPct} />
                     </div>
@@ -123,13 +136,13 @@ export default async function LearnerDashboard() {
 
                   {pts && (
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-400">{pts.points_total} очков</span>
-                      <LevelBadge level={pts.level} />
+                      <span className="text-xs text-gray-400">{t("points", { count: pts.points_total })}</span>
+                      <LevelBadge level={pts.level} label={tl("level", { level: pts.level })} />
                     </div>
                   )}
 
                   <Button variant="secondary" size="sm" className="w-full" asChild>
-                    <Link href={`/c/${community.slug}`}>Открыть</Link>
+                    <Link href={`/c/${community.slug}`}>{t("open")}</Link>
                   </Button>
                 </div>
               </div>

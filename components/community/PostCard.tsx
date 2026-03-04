@@ -3,10 +3,10 @@
 import { useState, useTransition } from "react";
 import Image from "next/image";
 import { Heart, MessageCircle, Pin } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { UserAvatar } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { relativeTime, cn } from "@/lib/utils";
-import type { PostWithAuthor, CommentWithAuthor } from "@/lib/types/database";
+import type { PostWithAuthor } from "@/lib/types/database";
 
 interface PostCardProps {
   post: PostWithAuthor;
@@ -19,6 +19,8 @@ export function PostCard({ post, currentUserId, onLike }: PostCardProps) {
   const [likesCount, setLikesCount] = useState(post.likes_count);
   const [showComments, setShowComments] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("PostCard");
+  const tTime = useTranslations("RelativeTime");
 
   function handleLike() {
     if (!currentUserId) return;
@@ -31,12 +33,12 @@ export function PostCard({ post, currentUserId, onLike }: PostCardProps) {
   }
 
   return (
-    <article className="bg-white border border-gray-100 rounded-xl p-5 space-y-4">
+    <article className="bg-white border border-gray-100 rounded-xl p-5 space-y-4 hover:border-gray-200 transition-colors">
       {/* Pinned indicator */}
       {post.is_pinned && (
         <div className="flex items-center gap-1.5 text-xs text-amber-600 font-medium">
           <Pin size={12} />
-          Закреплено
+          {t("pinned")}
         </div>
       )}
 
@@ -49,7 +51,7 @@ export function PostCard({ post, currentUserId, onLike }: PostCardProps) {
         />
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-gray-900">{post.author.name}</p>
-          <p className="text-xs text-gray-400">{relativeTime(post.created_at)}</p>
+          <p className="text-xs text-gray-400">{relativeTime(post.created_at, tTime)}</p>
         </div>
       </div>
 
@@ -104,10 +106,10 @@ export function PostCard({ post, currentUserId, onLike }: PostCardProps) {
         </button>
       </div>
 
-      {/* Comments (placeholder — expanded separately) */}
+      {/* Comments (placeholder) */}
       {showComments && (
         <div className="text-sm text-gray-400 italic pt-2 border-t border-gray-50">
-          Комментарии загружаются...
+          {t("commentsLoading")}
         </div>
       )}
     </article>

@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatUZS } from "@/lib/utils";
@@ -13,12 +16,15 @@ interface CommunityCardProps {
 }
 
 export function CommunityCard({ community, isMember }: CommunityCardProps) {
-  const categoryLabel =
-    COMMUNITY_CATEGORIES.find((c) => c.value === community.category)?.label ??
-    community.category;
+  const t = useTranslations("CommunityCard");
+  const tc = useTranslations("Categories");
+
+  const categoryLabel = COMMUNITY_CATEGORIES.includes(community.category as any)
+    ? tc(community.category)
+    : community.category;
 
   return (
-    <div className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+    <div className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 group">
       {/* Cover image */}
       <Link href={`/c/${community.slug}`} className="block relative h-40 bg-gradient-to-br from-blue-100 to-indigo-100 overflow-hidden">
         {community.cover_image ? (
@@ -61,7 +67,7 @@ export function CommunityCard({ community, isMember }: CommunityCardProps) {
 
         {/* Creator */}
         <p className="text-xs text-gray-400">
-          от {community.creator.name}
+          {t("by")} {community.creator.name}
         </p>
 
         {/* Footer */}
@@ -74,14 +80,14 @@ export function CommunityCard({ community, isMember }: CommunityCardProps) {
           <div className="flex items-center gap-2">
             {community.is_paid ? (
               <span className="text-xs font-medium text-gray-700">
-                {formatUZS(community.price_uzs)}/мес
+                {formatUZS(community.price_uzs)}{t("perMonth")}
               </span>
             ) : (
-              <span className="text-xs font-medium text-green-600">Бесплатно</span>
+              <span className="text-xs font-medium text-green-600">{t("free")}</span>
             )}
             <Button size="sm" variant={isMember ? "secondary" : "primary"} asChild>
               <Link href={`/c/${community.slug}`}>
-                {isMember ? "Открыть" : "Вступить"}
+                {isMember ? t("open") : t("join")}
               </Link>
             </Button>
           </div>

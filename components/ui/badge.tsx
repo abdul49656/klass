@@ -40,7 +40,7 @@ function Badge({ className, variant, ...props }: BadgeProps) {
   );
 }
 
-export function LevelBadge({ level }: { level: number }) {
+export function LevelBadge({ level, label }: { level: number; label?: string }) {
   const clampedLevel = Math.min(10, Math.max(1, level)) as
     | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   const variantMap: Record<typeof clampedLevel, BadgeProps["variant"]> = {
@@ -49,7 +49,7 @@ export function LevelBadge({ level }: { level: number }) {
   };
   return (
     <Badge variant={variantMap[clampedLevel]}>
-      Уровень {clampedLevel}
+      {label ?? `Level ${clampedLevel}`}
     </Badge>
   );
 }

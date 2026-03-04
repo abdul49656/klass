@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const t = await getTranslations("Auth");
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Simple header */}
@@ -21,7 +24,7 @@ export default function AuthLayout({
 
       {/* Footer */}
       <footer className="py-4 text-center text-xs text-gray-400">
-        © 2025 Klass. Все права защищены.
+        {t("footer")}
       </footer>
     </div>
   );

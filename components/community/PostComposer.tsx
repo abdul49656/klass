@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { ImagePlus, Send } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { UserAvatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import type { User } from "@/lib/types/database";
@@ -15,6 +16,7 @@ export function PostComposer({ user, onSubmit }: PostComposerProps) {
   const [content, setContent] = useState("");
   const [focused, setFocused] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("PostComposer");
 
   function handleSubmit() {
     if (!content.trim()) return;
@@ -34,7 +36,7 @@ export function PostComposer({ user, onSubmit }: PostComposerProps) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             onFocus={() => setFocused(true)}
-            placeholder="Что у вас нового?"
+            placeholder={t("placeholder")}
             rows={focused ? 3 : 1}
             className="w-full resize-none border-0 outline-none text-sm text-gray-800 placeholder:text-gray-400 bg-transparent transition-all"
             onKeyDown={(e) => {
@@ -52,7 +54,7 @@ export function PostComposer({ user, onSubmit }: PostComposerProps) {
                   size="sm"
                   onClick={() => { setFocused(false); setContent(""); }}
                 >
-                  Отмена
+                  {t("cancel")}
                 </Button>
                 <Button
                   size="sm"
@@ -61,7 +63,7 @@ export function PostComposer({ user, onSubmit }: PostComposerProps) {
                   disabled={!content.trim()}
                 >
                   <Send size={14} />
-                  Опубликовать
+                  {t("publish")}
                 </Button>
               </div>
             </div>

@@ -1,0 +1,269 @@
+{
+  "Metadata": {
+    "title": "Klass — Learn. Grow. Connect.",
+    "description": "A platform for learning communities. Create and monetize your own community.",
+    "keywords": "learning, community, courses, Uzbekistan"
+  },
+  "HomePage": {
+    "nav": {
+      "login": "Log in",
+      "signup": "Get started free"
+    },
+    "hero": {
+      "badge": "Learning community platform in Uzbekistan",
+      "titleLine1": "Build your",
+      "titleLine2": "community",
+      "description": "Klass is a platform where experts create paid learning communities and students learn, connect, and grow together.",
+      "ctaPrimary": "Get started free",
+      "ctaSecondary": "Browse communities"
+    },
+    "socialProof": {
+      "communities": "500+",
+      "communitiesLabel": "communities",
+      "learners": "10,000+",
+      "learnersLabel": "learners",
+      "lessons": "5,000+",
+      "lessonsLabel": "lessons"
+    },
+    "howItWorks": {
+      "heading": "How it works",
+      "step1Title": "Create a community",
+      "step1Description": "Sign up, pick your niche, and launch your learning community in 5 minutes.",
+      "step2Title": "Add content",
+      "step2Description": "Upload courses with video lessons, create posts, and engage with your members.",
+      "step3Title": "Earn money",
+      "step3Description": "Set a subscription price and receive weekly payouts to your card."
+    },
+    "features": {
+      "heading": "Everything you need in one place",
+      "community": {
+        "title": "Community",
+        "description": "Live feed, comments, pinned posts, and direct communication with members"
+      },
+      "classroom": {
+        "title": "Classroom",
+        "description": "Courses with modules and lessons, YouTube/Vimeo video lessons, progress tracking"
+      },
+      "gamification": {
+        "title": "Gamification",
+        "description": "Points for activity, levels, leaderboard — motivate your members to learn"
+      },
+      "monetization": {
+        "title": "Monetization",
+        "description": "Paid community access, automatic weekly payouts to your card"
+      }
+    },
+    "testimonials": {
+      "heading": "What our users say",
+      "t1": {
+        "quote": "Thanks to Klass, I was able to build a marketing community and earn my first income from my knowledge. The platform is incredibly simple!",
+        "name": "Aziz Karimov",
+        "role": "Creator · Marketing from Scratch"
+      },
+      "t2": {
+        "quote": "I found the best design courses here. Connecting with other learners motivates me to study every day.",
+        "name": "Dinara Usmanova",
+        "role": "Learner · Web Design PRO"
+      },
+      "t3": {
+        "quote": "Switched from another platform — everything is simpler here. Automatic payouts and gamification are fire!",
+        "name": "Sherzod Rakhimov",
+        "role": "Creator · Business Mindset"
+      }
+    },
+    "cta": {
+      "heading": "Ready to get started?",
+      "description": "Create your first community in minutes. Free forever for beginners.",
+      "button": "Sign up"
+    },
+    "footer": "© 2025 Klass. All rights reserved."
+  },
+  "Auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your account",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "error": "Invalid email or password",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Sign up"
+    },
+    "signup": {
+      "title": "Create account",
+      "subtitle": "Join thousands of learners and creators",
+      "learner": {
+        "title": "Learner",
+        "description": "Join communities and learn"
+      },
+      "creator": {
+        "title": "Creator",
+        "description": "Build a community and earn"
+      },
+      "name": "Your name",
+      "namePlaceholder": "John Doe",
+      "password": "Password",
+      "passwordPlaceholder": "At least 6 characters",
+      "submitCreator": "Sign up as creator",
+      "submitLearner": "Sign up as learner",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in"
+    },
+    "onboarding": {
+      "done": "All done!",
+      "redirecting": "Taking you to the platform…",
+      "creatorTitle": "Create your community",
+      "creatorSubtitle": "You can change this later",
+      "communityName": "Community name",
+      "communityNamePlaceholder": "e.g. Marketing from Scratch",
+      "communityDescription": "Description (optional)",
+      "communityDescriptionPlaceholder": "What is your community about?",
+      "category": "Category",
+      "submitCreator": "Create community and continue",
+      "learnerTitle": "Pick your interests",
+      "learnerSubtitle": "We'll suggest communities for you",
+      "submitLearner": "Go to community explorer"
+    },
+    "footer": "© 2025 Klass. All rights reserved."
+  },
+  "Validation": {
+    "emailInvalid": "Enter a valid email",
+    "passwordMin": "At least 6 characters",
+    "nameMin": "At least 2 characters",
+    "communityNameMin": "At least 3 characters",
+    "selectCategory": "Select a category",
+    "selectInterest": "Select at least 1 interest"
+  },
+  "Navbar": {
+    "explore": "Explore",
+    "dashboard": "Dashboard",
+    "myCourses": "My Courses",
+    "login": "Log in",
+    "signup": "Start",
+    "profile": "Profile",
+    "settings": "Settings",
+    "signOut": "Sign out"
+  },
+  "Explore": {
+    "heading": "Explore communities",
+    "subtitle": "Find your community and start learning",
+    "searchPlaceholder": "Search communities...",
+    "all": "All",
+    "empty": "No communities found",
+    "emptyHint": "Try a different category or search query"
+  },
+  "Community": {
+    "tabs": {
+      "feed": "Community",
+      "classroom": "Classroom",
+      "members": "Members",
+      "leaderboard": "Leaderboard"
+    },
+    "members": "members",
+    "by": "by",
+    "settings": "Settings",
+    "youAreMember": "Member",
+    "joinFree": "Join for free",
+    "joinPaid": "Join · {price}/mo",
+    "feedEmpty": "No posts yet",
+    "feedEmptyHint": "Be the first — write a post!",
+    "joinPrompt": "Join the community to read posts and chat",
+    "sidebarMembers": "Members",
+    "sidebarCost": "Price",
+    "topMembers": "Top members",
+    "perMonth": "UZS/mo"
+  },
+  "Classroom": {
+    "heading": "Classroom",
+    "empty": "No courses yet",
+    "paid": "Paid",
+    "lessons": "{count} lessons",
+    "completed": "{done}/{total} completed",
+    "minutes": "{count} min"
+  },
+  "Members": {
+    "heading": "Members",
+    "memberSince": "Member since {date}",
+    "empty": "No members yet",
+    "points": "{count} points"
+  },
+  "Leaderboard": {
+    "heading": "Leaderboard",
+    "member": "Member",
+    "level": "Level",
+    "points": "Points",
+    "empty": "No one has earned points yet"
+  },
+  "Creator": {
+    "heading": "Creator dashboard",
+    "greeting": "Hey, {name}! Here are your stats.",
+    "newCommunity": "New community",
+    "totalMembers": "Total members",
+    "inCommunities": "in {count} communities",
+    "communities": "Communities",
+    "active": "active",
+    "pendingBalance": "Pending balance",
+    "payoutSchedule": "payout every Monday",
+    "myCommunities": "My communities",
+    "noCommunities": "You don't have any communities yet",
+    "createFirst": "Create your first community",
+    "perMonth": "/mo",
+    "free": "Free",
+    "open": "Open",
+    "manage": "Manage",
+    "recentMembers": "Recent members",
+    "joinedIn": "Joined {community} · {date}"
+  },
+  "Learner": {
+    "heading": "My communities",
+    "greeting": "Hey, {name}! Keep learning.",
+    "empty": "You haven't joined any communities yet",
+    "findCommunity": "Find a community",
+    "progress": "Progress",
+    "lessonsProgress": "{done}/{total} lessons",
+    "points": "{count} points",
+    "open": "Open",
+    "by": "by"
+  },
+  "PostCard": {
+    "pinned": "Pinned",
+    "commentsLoading": "Loading comments..."
+  },
+  "PostComposer": {
+    "placeholder": "What's new?",
+    "cancel": "Cancel",
+    "publish": "Publish"
+  },
+  "CommunityCard": {
+    "free": "Free",
+    "perMonth": "/mo",
+    "open": "Open",
+    "join": "Join",
+    "by": "by"
+  },
+  "Categories": {
+    "business": "Business",
+    "technology": "Technology",
+    "design": "Design",
+    "marketing": "Marketing",
+    "education": "Education",
+    "health": "Health",
+    "fitness": "Fitness",
+    "language": "Languages",
+    "finance": "Finance",
+    "arts": "Arts",
+    "music": "Music",
+    "other": "Other"
+  },
+  "RelativeTime": {
+    "justNow": "just now",
+    "minutesAgo": "{count} min ago",
+    "hoursAgo": "{count}h ago",
+    "daysAgo": "{count}d ago"
+  },
+  "Level": "Level {level}",
+  "LanguageToggle": {
+    "ru": "Русский",
+    "en": "English"
+  }
+}

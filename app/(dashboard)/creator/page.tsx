@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +12,7 @@ import { Users, TrendingUp, DollarSign, PlusCircle, ExternalLink } from "lucide-
 export default async function CreatorDashboard() {
   const supabase = await createClient();
   const admin = createAdminClient();
+  const t = await getTranslations("Creator");
 
   const { data: { user: authUser } } = await supabase.auth.getUser();
   if (!authUser) redirect("/login");
@@ -60,16 +62,16 @@ export default async function CreatorDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            Панель создателя
+            {t("heading")}
           </h1>
           <p className="text-gray-500 mt-0.5">
-            Привет, {currentUser?.name}! Вот ваша статистика.
+            {t("greeting", { name: currentUser?.name })}
           </p>
         </div>
         <Button asChild>
           <Link href="/creator/new-community">
             <PlusCircle size={16} />
-            Новое сообщество
+            {t("newCommunity")}
           </Link>
         </Button>
       </div>
@@ -78,34 +80,34 @@ export default async function CreatorDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
           icon={<Users size={20} className="text-blue-600" />}
-          label="Всего участников"
+          label={t("totalMembers")}
           value={totalMembers.toLocaleString("ru-RU")}
-          sub={`в ${communities?.length ?? 0} сообществах`}
+          sub={t("inCommunities", { count: communities?.length ?? 0 })}
         />
         <StatCard
           icon={<TrendingUp size={20} className="text-green-600" />}
-          label="Сообществ"
+          label={t("communities")}
           value={String(communities?.length ?? 0)}
-          sub="активных"
+          sub={t("active")}
         />
         <StatCard
           icon={<DollarSign size={20} className="text-amber-600" />}
-          label="Баланс к выплате"
+          label={t("pendingBalance")}
           value={formatUZS(pendingBalance)}
-          sub="выплата каждый понедельник"
+          sub={t("payoutSchedule")}
         />
       </div>
 
       {/* Communities */}
       <div className="space-y-3">
-        <h2 className="text-base font-semibold text-gray-900">Мои сообщества</h2>
+        <h2 className="text-base font-semibold text-gray-900">{t("myCommunities")}</h2>
         {!communities?.length && (
           <Card>
             <CardContent className="py-12 text-center text-gray-400">
-              <p>У вас ещё нет сообществ</p>
+              <p>{t("noCommunities")}</p>
               <Button className="mt-3" asChild>
                 <Link href="/creator/new-community">
-                  Создать первое сообщество
+                  {t("createFirst")}
                 </Link>
               </Button>
             </CardContent>
@@ -118,7 +120,7 @@ export default async function CreatorDashboard() {
                 <div className="flex items-start justify-between gap-2">
                   <CardTitle>{community.name}</CardTitle>
                   <Badge variant={community.is_paid ? "primary" : "success"}>
-                    {community.is_paid ? formatUZS(community.price_uzs) + "/мес" : "Бесплатно"}
+                    {community.is_paid ? formatUZS(community.price_uzs) + t("perMonth") : t("free")}
                   </Badge>
                 </div>
               </CardHeader>
@@ -126,19 +128,19 @@ export default async function CreatorDashboard() {
                 <div className="flex items-center gap-4 text-sm text-gray-500">
                   <span className="flex items-center gap-1">
                     <Users size={14} />
-                    {community.member_count} участников
+                    {community.member_count} {t("totalMembers").toLowerCase()}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Button variant="secondary" size="sm" asChild>
                     <Link href={`/c/${community.slug}`}>
                       <ExternalLink size={13} />
-                      Открыть
+                      {t("open")}
                     </Link>
                   </Button>
                   <Button variant="ghost" size="sm" asChild>
                     <Link href={`/creator/communities/${community.id}`}>
-                      Управление
+                      {t("manage")}
                     </Link>
                   </Button>
                 </div>
@@ -151,15 +153,17 @@ export default async function CreatorDashboard() {
       {/* Recent members */}
       {recentMembers && recentMembers.length > 0 && (
         <div className="space-y-3">
-          <h2 className="text-base font-semibold text-gray-900">Новые участники</h2>
+          <h2 className="text-base font-semibold text-gray-900">{t("recentMembers")}</h2>
           <div className="bg-white border border-gray-100 rounded-xl divide-y divide-gray-50">
             {recentMembers.map((m: any) => (
               <div key={m.id} className="flex items-center gap-4 p-4">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-900">{m.user.name}</p>
                   <p className="text-xs text-gray-400">
-                    Вступил в {m.community.name} ·{" "}
-                    {new Date(m.started_at).toLocaleDateString("ru-RU")}
+                    {t("joinedIn", {
+                      community: m.community.name,
+                      date: new Date(m.started_at).toLocaleDateString("ru-RU"),
+                    })}
                   </p>
                 </div>
               </div>

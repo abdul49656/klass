@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getTranslations } from "next-intl/server";
 import { UserAvatar } from "@/components/ui/avatar";
 import { LevelBadge } from "@/components/ui/badge";
 import { notFound } from "next/navigation";
@@ -11,6 +12,8 @@ interface MembersPageProps {
 export default async function MembersPage({ params }: MembersPageProps) {
   const { slug } = await params;
   const admin = createAdminClient();
+  const t = await getTranslations("Members");
+  const tl = await getTranslations("Level");
 
   const { data: community } = await admin
     .from("communities")
@@ -41,7 +44,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
   return (
     <div className="max-w-2xl">
       <h2 className="text-lg font-semibold text-gray-900 mb-4">
-        Участники · {memberships?.length ?? 0}
+        {t("heading")} · {memberships?.length ?? 0}
       </h2>
 
       <div className="bg-white border border-gray-100 rounded-xl divide-y divide-gray-50">
@@ -54,18 +57,19 @@ export default async function MembersPage({ params }: MembersPageProps) {
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900">{user.name}</p>
                 <p className="text-xs text-gray-400">
-                  Участник с{" "}
-                  {new Date(m.started_at).toLocaleDateString("ru-RU", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
+                  {t("memberSince", {
+                    date: new Date(m.started_at).toLocaleDateString("ru-RU", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    }),
                   })}
                 </p>
               </div>
               {pts && (
                 <div className="text-right shrink-0 space-y-1">
-                  <LevelBadge level={pts.level} />
-                  <p className="text-xs text-gray-400">{pts.points} очков</p>
+                  <LevelBadge level={pts.level} label={tl("level", { level: pts.level })} />
+                  <p className="text-xs text-gray-400">{t("points", { count: pts.points })}</p>
                 </div>
               )}
             </div>
@@ -73,7 +77,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
         })}
         {!memberships?.length && (
           <div className="p-8 text-center text-gray-400">
-            Участников пока нет
+            {t("empty")}
           </div>
         )}
       </div>

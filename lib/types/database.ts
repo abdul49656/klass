@@ -168,23 +168,14 @@ export interface LeaderboardEntry {
   rank: number;
 }
 
-// Categories available for communities
+// Categories available for communities — labels are translated via Categories namespace
 export const COMMUNITY_CATEGORIES = [
-  { value: "business", label: "Бизнес" },
-  { value: "technology", label: "Технологии" },
-  { value: "design", label: "Дизайн" },
-  { value: "marketing", label: "Маркетинг" },
-  { value: "education", label: "Образование" },
-  { value: "health", label: "Здоровье" },
-  { value: "fitness", label: "Фитнес" },
-  { value: "language", label: "Языки" },
-  { value: "finance", label: "Финансы" },
-  { value: "arts", label: "Творчество" },
-  { value: "music", label: "Музыка" },
-  { value: "other", label: "Другое" },
+  "business", "technology", "design", "marketing",
+  "education", "health", "fitness", "language",
+  "finance", "arts", "music", "other",
 ] as const;
 
-export type CommunityCategory = (typeof COMMUNITY_CATEGORIES)[number]["value"];
+export type CommunityCategory = (typeof COMMUNITY_CATEGORIES)[number];
 
 // Platform tier configs
 export const PLATFORM_TIERS = {

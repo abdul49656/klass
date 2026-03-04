@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getTranslations } from "next-intl/server";
 import { PostCard } from "@/components/community/PostCard";
 import { PostComposer } from "@/components/community/PostComposer";
 import { PostSkeleton } from "@/components/ui/skeleton";
@@ -7,7 +8,7 @@ import { LevelBadge } from "@/components/ui/badge";
 import { UserAvatar } from "@/components/ui/avatar";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import type { PostWithAuthor, User, LeaderboardEntry } from "@/lib/types/database";
+import type { PostWithAuthor, User } from "@/lib/types/database";
 
 interface CommunityFeedProps {
   params: Promise<{ slug: string }>;
@@ -21,6 +22,7 @@ async function FeedPosts({
   currentUserId?: string;
 }) {
   const admin = createAdminClient();
+  const t = await getTranslations("Community");
 
   // Pinned posts first, then chronological
   const { data: posts } = await admin
@@ -45,8 +47,8 @@ async function FeedPosts({
   if (!posts?.length) {
     return (
       <div className="text-center py-16 text-gray-400">
-        <p className="text-lg font-medium">Постов пока нет</p>
-        <p className="text-sm mt-1">Будьте первым — напишите пост!</p>
+        <p className="text-lg font-medium">{t("feedEmpty")}</p>
+        <p className="text-sm mt-1">{t("feedEmptyHint")}</p>
       </div>
     );
   }
@@ -66,6 +68,8 @@ async function FeedPosts({
 
 async function Leaderboard({ communityId }: { communityId: string }) {
   const admin = createAdminClient();
+  const t = await getTranslations("Community");
+  const tl = await getTranslations("Level");
   const { data } = await admin
     .from("points")
     .select("*, user:users!user_id(id, name, avatar_url)")
@@ -77,7 +81,7 @@ async function Leaderboard({ communityId }: { communityId: string }) {
 
   return (
     <div className="bg-white border border-gray-100 rounded-xl p-4 space-y-3">
-      <h3 className="text-sm font-semibold text-gray-700">🏆 Топ участников</h3>
+      <h3 className="text-sm font-semibold text-gray-700">{t("topMembers")}</h3>
       <div className="space-y-2">
         {data.map((entry, i) => (
           <div key={entry.user_id} className="flex items-center gap-3">
@@ -94,7 +98,7 @@ async function Leaderboard({ communityId }: { communityId: string }) {
                 {(entry as any).user.name}
               </p>
             </div>
-            <LevelBadge level={entry.level} />
+            <LevelBadge level={entry.level} label={tl("level", { level: entry.level })} />
           </div>
         ))}
       </div>
@@ -106,6 +110,7 @@ export default async function CommunityFeedPage({ params }: CommunityFeedProps) 
   const { slug } = await params;
   const supabase = await createClient();
   const admin = createAdminClient();
+  const t = await getTranslations("Community");
 
   const { data: community } = await admin
     .from("communities")
@@ -152,7 +157,7 @@ export default async function CommunityFeedPage({ params }: CommunityFeedProps) 
         {!isMember && !isCreator && (
           <div className="bg-white border border-gray-100 rounded-xl p-8 text-center space-y-3">
             <p className="text-gray-600 font-medium">
-              Вступите в сообщество, чтобы читать посты и общаться
+              {t("joinPrompt")}
             </p>
           </div>
         )}
@@ -180,17 +185,16 @@ export default async function CommunityFeedPage({ params }: CommunityFeedProps) 
         {/* Stats */}
         <div className="bg-white border border-gray-100 rounded-xl p-4 space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-500">Участников</span>
+            <span className="text-gray-500">{t("sidebarMembers")}</span>
             <span className="font-semibold text-gray-900">
               {community.member_count.toLocaleString("ru-RU")}
             </span>
           </div>
           {community.is_paid && (
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-500">Стоимость</span>
+              <span className="text-gray-500">{t("sidebarCost")}</span>
               <span className="font-semibold text-gray-900">
-                {/* formatUZS imported via server */}
-                {Math.round(community.price_uzs / 100).toLocaleString("ru-RU")} UZS/мес
+                {Math.round(community.price_uzs / 100).toLocaleString("ru-RU")} {t("perMonth")}
               </span>
             </div>
           )}

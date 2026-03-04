@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { UserAvatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { LanguageToggle } from "@/components/layout/LanguageToggle";
 import { cn } from "@/lib/utils";
 import {
   Compass,
@@ -24,6 +26,7 @@ export function Navbar({ user }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
+  const t = useTranslations("Navbar");
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -46,7 +49,7 @@ export function Navbar({ user }: NavbarProps) {
         <nav className="hidden md:flex items-center gap-1">
           <NavLink href="/explore" active={pathname === "/explore"}>
             <Compass size={16} />
-            Обзор
+            {t("explore")}
           </NavLink>
           {user?.role === "creator" && (
             <NavLink
@@ -54,7 +57,7 @@ export function Navbar({ user }: NavbarProps) {
               active={pathname.startsWith("/creator")}
             >
               <LayoutDashboard size={16} />
-              Панель
+              {t("dashboard")}
             </NavLink>
           )}
           {user?.role === "learner" && (
@@ -63,13 +66,14 @@ export function Navbar({ user }: NavbarProps) {
               active={pathname.startsWith("/learner")}
             >
               <LayoutDashboard size={16} />
-              Мои курсы
+              {t("myCourses")}
             </NavLink>
           )}
         </nav>
 
         {/* Right side */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <LanguageToggle />
           {user ? (
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild>
@@ -93,11 +97,11 @@ export function Navbar({ user }: NavbarProps) {
                   </div>
                   <DropdownItem href="/profile">
                     <User size={14} />
-                    Профиль
+                    {t("profile")}
                   </DropdownItem>
                   <DropdownItem href="/settings">
                     <Settings size={14} />
-                    Настройки
+                    {t("settings")}
                   </DropdownItem>
                   <DropdownMenu.Separator className="h-px bg-gray-100 my-1" />
                   <DropdownMenu.Item
@@ -105,7 +109,7 @@ export function Navbar({ user }: NavbarProps) {
                     onSelect={handleSignOut}
                   >
                     <LogOut size={14} />
-                    Выйти
+                    {t("signOut")}
                   </DropdownMenu.Item>
                 </DropdownMenu.Content>
               </DropdownMenu.Portal>
@@ -113,10 +117,10 @@ export function Navbar({ user }: NavbarProps) {
           ) : (
             <>
               <Button variant="ghost" size="sm" asChild>
-                <Link href="/login">Войти</Link>
+                <Link href="/login">{t("login")}</Link>
               </Button>
               <Button size="sm" asChild>
-                <Link href="/signup">Начать</Link>
+                <Link href="/signup">{t("signup")}</Link>
               </Button>
             </>
           )}

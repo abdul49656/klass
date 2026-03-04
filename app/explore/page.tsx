@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getTranslations } from "next-intl/server";
 import { Navbar } from "@/components/layout/navbar";
 import { CommunityCard } from "@/components/community/CommunityCard";
 import { CommunityCardSkeleton } from "@/components/ui/skeleton";
@@ -22,6 +23,7 @@ async function CommunitiesGrid({
   currentUserId?: string;
 }) {
   const supabase = createAdminClient();
+  const t = await getTranslations("Explore");
 
   let dbQuery = supabase
     .from("communities")
@@ -49,8 +51,8 @@ async function CommunitiesGrid({
   if (!communities?.length) {
     return (
       <div className="col-span-full text-center py-16 text-gray-400">
-        <p className="text-lg font-medium">Сообщества не найдены</p>
-        <p className="text-sm mt-1">Попробуйте другую категорию или поисковый запрос</p>
+        <p className="text-lg font-medium">{t("empty")}</p>
+        <p className="text-sm mt-1">{t("emptyHint")}</p>
       </div>
     );
   }
@@ -70,6 +72,8 @@ async function CommunitiesGrid({
 
 export default async function ExplorePage({ searchParams }: ExplorePageProps) {
   const params = await searchParams;
+  const t = await getTranslations("Explore");
+  const tc = await getTranslations("Categories");
 
   let authUser = null;
   let currentUser: User | null = null;
@@ -97,10 +101,8 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
         {/* Header */}
         <div className="mb-8 space-y-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Обзор сообществ</h1>
-            <p className="text-gray-500 mt-1">
-              Найдите своё сообщество и начните учиться
-            </p>
+            <h1 className="text-3xl font-bold text-gray-900">{t("heading")}</h1>
+            <p className="text-gray-500 mt-1">{t("subtitle")}</p>
           </div>
 
           {/* Search */}
@@ -112,7 +114,7 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
             <input
               name="q"
               defaultValue={params.q}
-              placeholder="Поиск сообществ..."
+              placeholder={t("searchPlaceholder")}
               className="w-full h-10 pl-9 pr-4 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </form>
@@ -120,16 +122,16 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
           {/* Category filters */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
             <CategoryChip
-              label="Все"
+              label={t("all")}
               href="/explore"
               active={!params.category}
             />
             {COMMUNITY_CATEGORIES.map((cat) => (
               <CategoryChip
-                key={cat.value}
-                label={cat.label}
-                href={`/explore?category=${cat.value}${params.q ? `&q=${params.q}` : ""}`}
-                active={params.category === cat.value}
+                key={cat}
+                label={tc(cat)}
+                href={`/explore?category=${cat}${params.q ? `&q=${params.q}` : ""}`}
+                active={params.category === cat}
               />
             ))}
           </div>

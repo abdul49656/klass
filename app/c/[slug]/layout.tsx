@@ -1,13 +1,14 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getTranslations } from "next-intl/server";
 import { Navbar } from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
 import { cn, formatUZS } from "@/lib/utils";
 import { Users } from "lucide-react";
-import type { Community, User } from "@/lib/types/database";
+import type { User } from "@/lib/types/database";
 
 interface CommunityLayoutProps {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ export default async function CommunityLayout({
   const { slug } = await params;
   const supabase = await createClient();
   const adminSupabase = createAdminClient();
+  const t = await getTranslations("Community");
 
   const { data: community } = await adminSupabase
     .from("communities")
@@ -57,10 +59,10 @@ export default async function CommunityLayout({
   const isCreator = currentUser?.id === community.creator_id;
 
   const tabs = [
-    { href: `/c/${slug}`, label: "Сообщество" },
-    { href: `/c/${slug}/classroom`, label: "Классная комната" },
-    { href: `/c/${slug}/members`, label: "Участники" },
-    { href: `/c/${slug}/leaderboard`, label: "Рейтинг" },
+    { href: `/c/${slug}`, label: t("tabs.feed") },
+    { href: `/c/${slug}/classroom`, label: t("tabs.classroom") },
+    { href: `/c/${slug}/members`, label: t("tabs.members") },
+    { href: `/c/${slug}/leaderboard`, label: t("tabs.leaderboard") },
   ];
 
   return (
@@ -94,28 +96,28 @@ export default async function CommunityLayout({
               <div className="flex items-center gap-3 mt-1 text-xs text-gray-400">
                 <span className="flex items-center gap-1">
                   <Users size={12} />
-                  {community.member_count.toLocaleString("ru-RU")} участников
+                  {community.member_count.toLocaleString("ru-RU")} {t("members")}
                 </span>
                 <span>·</span>
-                <span>от {(community as any).creator.name}</span>
+                <span>{t("by")} {(community as any).creator.name}</span>
               </div>
             </div>
 
             <div className="shrink-0">
               {isCreator ? (
                 <Button variant="secondary" size="sm" asChild>
-                  <Link href={`/c/${slug}/settings`}>Настройки</Link>
+                  <Link href={`/c/${slug}/settings`}>{t("settings")}</Link>
                 </Button>
               ) : isMember ? (
                 <Button variant="secondary" size="sm">
-                  Вы участник
+                  {t("youAreMember")}
                 </Button>
               ) : (
                 <Button size="sm" asChild>
                   <Link href={`/c/${slug}?join=1`}>
                     {community.is_paid
-                      ? `Вступить · ${formatUZS(community.price_uzs)}/мес`
-                      : "Вступить бесплатно"}
+                      ? t("joinPaid", { price: formatUZS(community.price_uzs) })
+                      : t("joinFree")}
                   </Link>
                 </Button>
               )}
@@ -138,7 +140,6 @@ export default async function CommunityLayout({
 }
 
 function CommunityTab({ href, label }: { href: string; label: string }) {
-  // Active state is handled client-side — we render as a link for SSR
   return (
     <Link
       href={href}

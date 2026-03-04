@@ -35,8 +35,11 @@ export function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-/** Relative time in Russian */
-export function relativeTime(date: string | Date): string {
+/** Relative time — accepts a translation function for i18n */
+export function relativeTime(
+  date: string | Date,
+  t: (key: string, values?: any) => string
+): string {
   const d = typeof date === "string" ? new Date(date) : date;
   const now = new Date();
   const diffMs = now.getTime() - d.getTime();
@@ -45,10 +48,10 @@ export function relativeTime(date: string | Date): string {
   const diffHour = Math.floor(diffMin / 60);
   const diffDay = Math.floor(diffHour / 24);
 
-  if (diffSec < 60) return "только что";
-  if (diffMin < 60) return `${diffMin} мин. назад`;
-  if (diffHour < 24) return `${diffHour} ч. назад`;
-  if (diffDay < 7) return `${diffDay} д. назад`;
+  if (diffSec < 60) return t("justNow");
+  if (diffMin < 60) return t("minutesAgo", { count: diffMin });
+  if (diffHour < 24) return t("hoursAgo", { count: diffHour });
+  if (diffDay < 7) return t("daysAgo", { count: diffDay });
   return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
 }
 

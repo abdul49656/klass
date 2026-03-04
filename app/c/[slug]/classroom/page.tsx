@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Progress } from "@/components/ui/progress";
@@ -14,6 +15,7 @@ export default async function ClassroomPage({ params }: ClassroomPageProps) {
   const { slug } = await params;
   const supabase = await createClient();
   const admin = createAdminClient();
+  const t = await getTranslations("Classroom");
 
   const { data: community } = await admin
     .from("communities")
@@ -61,12 +63,12 @@ export default async function ClassroomPage({ params }: ClassroomPageProps) {
 
   return (
     <div className="max-w-3xl">
-      <h2 className="text-lg font-semibold text-gray-900 mb-6">Классная комната</h2>
+      <h2 className="text-lg font-semibold text-gray-900 mb-6">{t("heading")}</h2>
 
       {!courses?.length && (
         <div className="bg-white border border-gray-100 rounded-xl p-8 text-center text-gray-400">
           <BookOpen size={32} className="mx-auto mb-2 opacity-50" />
-          <p>Курсов пока нет</p>
+          <p>{t("empty")}</p>
         </div>
       )}
 
@@ -96,7 +98,7 @@ export default async function ClassroomPage({ params }: ClassroomPageProps) {
                     {course.is_locked && !isMember && (
                       <Badge variant="default" className="gap-1">
                         <Lock size={10} />
-                        Платный
+                        {t("paid")}
                       </Badge>
                     )}
                   </div>
@@ -105,11 +107,11 @@ export default async function ClassroomPage({ params }: ClassroomPageProps) {
                   )}
                   <div className="flex items-center gap-3 mt-2">
                     <span className="text-xs text-gray-400">
-                      {lessons.length} уроков
+                      {t("lessons", { count: lessons.length })}
                     </span>
                     {authUser && (
                       <span className="text-xs text-gray-400">
-                        {completedCount}/{lessons.length} пройдено
+                        {t("completed", { done: completedCount, total: lessons.length })}
                       </span>
                     )}
                   </div>
@@ -125,7 +127,7 @@ export default async function ClassroomPage({ params }: ClassroomPageProps) {
               {/* Lessons list */}
               {lessons.length > 0 && (
                 <div className="border-t border-gray-50 divide-y divide-gray-50">
-                  {lessons.map((lesson: any, idx: number) => {
+                  {lessons.map((lesson: any) => {
                     const isCompleted = completedLessonIds.has(lesson.id);
                     const isLocked = course.is_locked && !isMember;
 
@@ -156,7 +158,7 @@ export default async function ClassroomPage({ params }: ClassroomPageProps) {
                         </div>
                         {lesson.duration_minutes && (
                           <span className="text-xs text-gray-400 shrink-0">
-                            {lesson.duration_minutes} мин
+                            {t("minutes", { count: lesson.duration_minutes })}
                           </span>
                         )}
                       </div>
