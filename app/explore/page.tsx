@@ -1,11 +1,12 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getTranslations } from "next-intl/server";
 import { Navbar } from "@/components/layout/navbar";
 import { CommunityCard } from "@/components/community/CommunityCard";
 import { CommunityCardSkeleton } from "@/components/ui/skeleton";
-import { COMMUNITY_CATEGORIES } from "@/lib/types/database";
+import { COMMUNITY_CATEGORIES, CATEGORY_EMOJIS } from "@/lib/types/database";
 import type { CommunityWithCreator, User } from "@/lib/types/database";
 import { Search } from "lucide-react";
 
@@ -59,11 +60,12 @@ async function CommunitiesGrid({
 
   return (
     <>
-      {communities.map((c) => (
+      {communities.map((c, index) => (
         <CommunityCard
           key={c.id}
           community={c as CommunityWithCreator}
           isMember={memberCommunityIds.has(c.id)}
+          rank={index + 1}
         />
       ))}
     </>
@@ -94,33 +96,43 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Navbar user={currentUser} />
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8 space-y-4">
+      <main className="max-w-5xl mx-auto px-4 pt-12 pb-16">
+        {/* Header — centered like Skool */}
+        <div className="text-center mb-10 space-y-5">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{t("heading")}</h1>
-            <p className="text-gray-500 mt-1">{t("subtitle")}</p>
+            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
+              {t("heading")}
+            </h1>
+            <p className="text-gray-400 mt-2">
+              {t("subtitlePrefix")}{" "}
+              <Link
+                href="/signup"
+                className="text-blue-600 hover:text-blue-700 font-medium hover:underline"
+              >
+                {t("subtitleLink")}
+              </Link>
+            </p>
           </div>
 
-          {/* Search */}
-          <form className="relative max-w-md">
+          {/* Search — centered & prominent */}
+          <form className="relative max-w-xl mx-auto">
             <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              size={16}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300"
+              size={20}
             />
             <input
               name="q"
               defaultValue={params.q}
               placeholder={t("searchPlaceholder")}
-              className="w-full h-10 pl-9 pr-4 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full h-12 pl-12 pr-5 bg-white border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
             />
           </form>
 
-          {/* Category filters */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          {/* Category chips with emojis */}
+          <div className="flex items-center justify-center gap-2 flex-wrap">
             <CategoryChip
               label={t("all")}
               href="/explore"
@@ -129,7 +141,7 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
             {COMMUNITY_CATEGORIES.map((cat) => (
               <CategoryChip
                 key={cat}
-                label={tc(cat)}
+                label={`${CATEGORY_EMOJIS[cat]} ${tc(cat)}`}
                 href={`/explore?category=${cat}${params.q ? `&q=${params.q}` : ""}`}
                 active={params.category === cat}
               />
@@ -137,10 +149,10 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
           </div>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {/* Grid — 3 columns like Skool */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <Suspense
-            fallback={Array.from({ length: 8 }).map((_, i) => (
+            fallback={Array.from({ length: 6 }).map((_, i) => (
               <CommunityCardSkeleton key={i} />
             ))}
           >
@@ -168,10 +180,10 @@ function CategoryChip({
   return (
     <a
       href={href}
-      className={`shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+      className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
         active
-          ? "bg-blue-600 text-white"
-          : "bg-white border border-gray-200 text-gray-600 hover:border-gray-300"
+          ? "bg-gray-900 text-white shadow-sm"
+          : "bg-white border border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
       }`}
     >
       {label}

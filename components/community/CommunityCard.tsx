@@ -2,31 +2,34 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Users } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { formatUZS } from "@/lib/utils";
-import { COMMUNITY_CATEGORIES } from "@/lib/types/database";
 import type { CommunityWithCreator } from "@/lib/types/database";
 
 interface CommunityCardProps {
   community: CommunityWithCreator;
   isMember?: boolean;
+  rank?: number;
 }
 
-export function CommunityCard({ community, isMember }: CommunityCardProps) {
+export function CommunityCard({ community, isMember, rank }: CommunityCardProps) {
   const t = useTranslations("CommunityCard");
-  const tc = useTranslations("Categories");
 
-  const categoryLabel = COMMUNITY_CATEGORIES.includes(community.category as any)
-    ? tc(community.category)
-    : community.category;
+  const memberCount = community.member_count >= 1000
+    ? `${(community.member_count / 1000).toFixed(1).replace(/\.0$/, "")}k`
+    : community.member_count.toString();
+
+  const priceLabel = community.is_paid
+    ? `${formatUZS(community.price_uzs)}${t("perMonth")}`
+    : t("free");
 
   return (
-    <div className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 group">
-      {/* Cover image */}
-      <Link href={`/c/${community.slug}`} className="block relative h-40 bg-gradient-to-br from-blue-100 to-indigo-100 overflow-hidden">
+    <Link
+      href={`/c/${community.slug}`}
+      className="block bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5 group"
+    >
+      {/* Cover image with rank badge */}
+      <div className="relative h-44 bg-gradient-to-br from-blue-50 to-indigo-100 overflow-hidden">
         {community.cover_image ? (
           <Image
             src={community.cover_image}
@@ -36,63 +39,61 @@ export function CommunityCard({ community, isMember }: CommunityCardProps) {
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-4xl font-bold text-blue-200 select-none">
+            <span className="text-5xl font-bold text-blue-200/60 select-none">
               {community.name[0]}
             </span>
           </div>
         )}
-        {/* Category badge overlay */}
-        <div className="absolute top-3 left-3">
-          <Badge variant="default" className="bg-white/90 text-gray-700 text-xs">
-            {categoryLabel}
-          </Badge>
-        </div>
-      </Link>
+        {/* Rank badge */}
+        {rank && (
+          <div className="absolute top-3 left-3 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-md">
+            #{rank}
+          </div>
+        )}
+      </div>
 
       {/* Content */}
-      <div className="p-4 space-y-3">
-        <div>
-          <Link
-            href={`/c/${community.slug}`}
-            className="font-semibold text-gray-900 hover:text-blue-600 transition-colors line-clamp-1"
-          >
-            {community.name}
-          </Link>
-          {community.description && (
-            <p className="text-sm text-gray-500 mt-1 line-clamp-2">
-              {community.description}
-            </p>
-          )}
-        </div>
-
-        {/* Creator */}
-        <p className="text-xs text-gray-400">
-          {t("by")} {community.creator.name}
-        </p>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex items-center gap-1 text-xs text-gray-500">
-            <Users size={12} />
-            <span>{community.member_count.toLocaleString("ru-RU")}</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            {community.is_paid ? (
-              <span className="text-xs font-medium text-gray-700">
-                {formatUZS(community.price_uzs)}{t("perMonth")}
-              </span>
+      <div className="p-4 space-y-2.5">
+        {/* Avatar + Name row */}
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-full bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
+            {community.creator.avatar_url ? (
+              <Image
+                src={community.creator.avatar_url}
+                alt={community.creator.name}
+                width={36}
+                height={36}
+                className="object-cover w-full h-full"
+              />
             ) : (
-              <span className="text-xs font-medium text-green-600">{t("free")}</span>
+              <div className="w-full h-full flex items-center justify-center text-sm font-semibold text-gray-400">
+                {community.creator.name?.[0] || "?"}
+              </div>
             )}
-            <Button size="sm" variant={isMember ? "secondary" : "primary"} asChild>
-              <Link href={`/c/${community.slug}`}>
-                {isMember ? t("open") : t("join")}
-              </Link>
-            </Button>
           </div>
+          <h3 className="font-semibold text-gray-900 line-clamp-1 text-[15px]">
+            {community.name}
+          </h3>
         </div>
+
+        {/* Description */}
+        {community.description && (
+          <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+            {community.description}
+          </p>
+        )}
+
+        {/* Footer: member count + price */}
+        <p className="text-sm text-gray-400 pt-1">
+          {memberCount} {t("members")}
+          {community.is_paid && (
+            <>
+              <span className="mx-1.5">·</span>
+              <span>{priceLabel}</span>
+            </>
+          )}
+        </p>
       </div>
-    </div>
+    </Link>
   );
 }

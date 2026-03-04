@@ -145,9 +145,10 @@
     "signOut": "Sign out"
   },
   "Explore": {
-    "heading": "Explore communities",
-    "subtitle": "Find your community and start learning",
-    "searchPlaceholder": "Search communities...",
+    "heading": "Discover communities",
+    "subtitlePrefix": "or",
+    "subtitleLink": "create your own",
+    "searchPlaceholder": "Search for anything",
     "all": "All",
     "empty": "No communities found",
     "emptyHint": "Try a different category or search query"
@@ -239,7 +240,8 @@
     "perMonth": "/mo",
     "open": "Open",
     "join": "Join",
-    "by": "by"
+    "by": "by",
+    "members": "Members"
   },
   "Categories": {
     "business": "Business",

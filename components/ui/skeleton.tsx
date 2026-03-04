@@ -11,15 +11,15 @@ export function Skeleton({ className }: { className?: string }) {
 export function CommunityCardSkeleton() {
   return (
     <div className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm">
-      <Skeleton className="h-40 w-full rounded-none" />
-      <div className="p-4 space-y-3">
-        <Skeleton className="h-5 w-3/4" />
+      <Skeleton className="h-44 w-full rounded-none" />
+      <div className="p-4 space-y-2.5">
+        <div className="flex items-center gap-2.5">
+          <Skeleton className="w-9 h-9 rounded-full shrink-0" />
+          <Skeleton className="h-5 w-3/4" />
+        </div>
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-2/3" />
-        <div className="flex items-center justify-between pt-1">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-9 w-28" />
-        </div>
+        <Skeleton className="h-4 w-40 mt-1" />
       </div>
     </div>
   );

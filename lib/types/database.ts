@@ -177,6 +177,21 @@ export const COMMUNITY_CATEGORIES = [
 
 export type CommunityCategory = (typeof COMMUNITY_CATEGORIES)[number];
 
+export const CATEGORY_EMOJIS: Record<CommunityCategory, string> = {
+  business: "💼",
+  technology: "💻",
+  design: "🎨",
+  marketing: "📢",
+  education: "📚",
+  health: "💊",
+  fitness: "💪",
+  language: "🗣️",
+  finance: "💰",
+  arts: "🎭",
+  music: "🎵",
+  other: "🌐",
+};
+
 // Platform tier configs
 export const PLATFORM_TIERS = {
   free: { label: "Free", price_uzs: 0, platform_cut: 0.1, max_communities: 1 },
