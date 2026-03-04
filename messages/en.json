@@ -265,5 +265,60 @@
   "LanguageToggle": {
     "ru": "Русский",
     "en": "English"
+  },
+  "Profile": {
+    "heading": "Profile",
+    "email": "Email",
+    "role": "Role",
+    "joined": "Joined",
+    "creator": "Creator",
+    "learner": "Learner",
+    "admin": "Admin"
+  },
+  "Settings": {
+    "heading": "Settings",
+    "changePassword": "Change password",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "At least 6 characters",
+    "passwordChanged": "Password changed successfully",
+    "save": "Save"
+  },
+  "NewCommunity": {
+    "heading": "Create a community",
+    "details": "Community details",
+    "name": "Name",
+    "namePlaceholder": "e.g. Marketing from Scratch",
+    "description": "Description",
+    "descriptionPlaceholder": "What is your community about?",
+    "category": "Category",
+    "selectCategory": "Select a category",
+    "paidCommunity": "Paid community",
+    "price": "Price (UZS/month)",
+    "priceHint": "Enter the amount in UZS",
+    "create": "Create community"
+  },
+  "CommunitySettings": {
+    "heading": "Community settings",
+    "general": "General",
+    "name": "Name",
+    "description": "Description",
+    "category": "Category",
+    "paidCommunity": "Paid community",
+    "price": "Price (UZS/month)",
+    "save": "Save changes",
+    "saved": "Changes saved",
+    "loading": "Loading..."
+  },
+  "ManageCommunity": {
+    "view": "View",
+    "settings": "Settings",
+    "members": "Members",
+    "lessons": "Lessons",
+    "posts": "Posts",
+    "courses": "Courses",
+    "perMonth": "/mo",
+    "free": "Free",
+    "noCourses": "No courses yet",
+    "lessonsCount": "lessons"
   }
 }

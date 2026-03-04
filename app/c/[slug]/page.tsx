@@ -114,7 +114,7 @@ export default async function CommunityFeedPage({ params }: CommunityFeedProps) 
 
   const { data: community } = await admin
     .from("communities")
-    .select("id, name, member_count, is_paid, price_uzs")
+    .select("id, name, creator_id, member_count, is_paid, price_uzs")
     .eq("slug", slug)
     .single();
 
@@ -143,7 +143,7 @@ export default async function CommunityFeedPage({ params }: CommunityFeedProps) 
     isMember = !!membership;
   }
 
-  const isCreator = currentUser?.id !== undefined;
+  const isCreator = currentUser?.id === community.creator_id;
   const canPost = isMember || isCreator;
 
   return (

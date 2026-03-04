@@ -265,5 +265,60 @@
   "LanguageToggle": {
     "ru": "Русский",
     "en": "English"
+  },
+  "Profile": {
+    "heading": "Профиль",
+    "email": "Email",
+    "role": "Роль",
+    "joined": "Дата регистрации",
+    "creator": "Создатель",
+    "learner": "Ученик",
+    "admin": "Администратор"
+  },
+  "Settings": {
+    "heading": "Настройки",
+    "changePassword": "Изменить пароль",
+    "newPassword": "Новый пароль",
+    "newPasswordPlaceholder": "Минимум 6 символов",
+    "passwordChanged": "Пароль успешно изменён",
+    "save": "Сохранить"
+  },
+  "NewCommunity": {
+    "heading": "Создать сообщество",
+    "details": "Данные сообщества",
+    "name": "Название",
+    "namePlaceholder": "Например: Маркетинг с нуля",
+    "description": "Описание",
+    "descriptionPlaceholder": "О чём ваше сообщество?",
+    "category": "Категория",
+    "selectCategory": "Выберите категорию",
+    "paidCommunity": "Платное сообщество",
+    "price": "Цена (UZS/месяц)",
+    "priceHint": "Укажите сумму в UZS",
+    "create": "Создать сообщество"
+  },
+  "CommunitySettings": {
+    "heading": "Настройки сообщества",
+    "general": "Основные",
+    "name": "Название",
+    "description": "Описание",
+    "category": "Категория",
+    "paidCommunity": "Платное сообщество",
+    "price": "Цена (UZS/месяц)",
+    "save": "Сохранить изменения",
+    "saved": "Изменения сохранены",
+    "loading": "Загрузка..."
+  },
+  "ManageCommunity": {
+    "view": "Открыть",
+    "settings": "Настройки",
+    "members": "Участников",
+    "lessons": "Уроков",
+    "posts": "Постов",
+    "courses": "Курсы",
+    "perMonth": "/мес",
+    "free": "Бесплатно",
+    "noCourses": "Курсов пока нет",
+    "lessonsCount": "уроков"
   }
 }
