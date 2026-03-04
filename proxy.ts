@@ -6,10 +6,26 @@ const AUTH_ROUTES = ["/login", "/signup"];
 
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
+  const { pathname } = request.nextUrl;
+
+  // Cron endpoint protection (no Supabase needed)
+  if (pathname.startsWith("/api/payouts/process")) {
+    const authHeader = request.headers.get("authorization");
+    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    return supabaseResponse;
+  }
+
+  // Skip auth checks if Supabase is not configured
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!supabaseUrl || supabaseUrl === "https://placeholder.supabase.co") {
+    return supabaseResponse;
+  }
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder_anon_key_for_build",
+    supabaseUrl,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
     {
       cookies: {
         getAll() {
@@ -32,17 +48,6 @@ export async function proxy(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const { pathname } = request.nextUrl;
-
-  // Cron endpoint protection
-  if (pathname.startsWith("/api/payouts/process")) {
-    const authHeader = request.headers.get("authorization");
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    return supabaseResponse;
-  }
 
   // Redirect authenticated users away from auth pages
   if (user && AUTH_ROUTES.some((r) => pathname.startsWith(r))) {

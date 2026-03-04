@@ -70,17 +70,23 @@ async function CommunitiesGrid({
 
 export default async function ExplorePage({ searchParams }: ExplorePageProps) {
   const params = await searchParams;
-  const supabase = await createClient();
-  const { data: { user: authUser } } = await supabase.auth.getUser();
 
+  let authUser = null;
   let currentUser: User | null = null;
-  if (authUser) {
-    const { data } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", authUser.id)
-      .single();
-    currentUser = data;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.auth.getUser();
+    authUser = data.user;
+    if (authUser) {
+      const { data: userData } = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", authUser.id)
+        .single();
+      currentUser = userData;
+    }
+  } catch {
+    // Supabase not configured yet
   }
 
   return (
