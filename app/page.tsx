@@ -1,23 +1,8 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen, Users, Trophy, Zap } from "lucide-react";
 
-export const dynamic = "force-dynamic";
-
-export default async function HomePage() {
-  let user = null;
-  try {
-    const supabase = await createClient();
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
-  } catch {
-    // Supabase not configured yet — show landing page
-  }
-
-  if (user) redirect("/explore");
-
+export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Nav */}
