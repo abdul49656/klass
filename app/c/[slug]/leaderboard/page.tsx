@@ -14,7 +14,7 @@ export default async function LeaderboardPage({ params }: LeaderboardPageProps) 
   const { slug } = await params;
   const admin = createAdminClient();
   const t = await getTranslations("Leaderboard");
-  const tl = await getTranslations("Level");
+  const tRoot = await getTranslations();
 
   const { data: community } = await admin
     .from("communities")
@@ -70,7 +70,7 @@ export default async function LeaderboardPage({ params }: LeaderboardPageProps) 
                 </span>
               </div>
               <div className="col-span-3 space-y-1">
-                <LevelBadge level={entry.level} label={tl("level", { level: entry.level })} />
+                <LevelBadge level={entry.level} label={tRoot("Level", { level: entry.level })} />
                 <Progress value={progress} className="h-1" />
               </div>
               <div className="col-span-3 text-right">

@@ -13,7 +13,7 @@ export default async function LearnerDashboard() {
   const supabase = await createClient();
   const admin = createAdminClient();
   const t = await getTranslations("Learner");
-  const tl = await getTranslations("Level");
+  const tRoot = await getTranslations();
 
   const { data: { user: authUser } } = await supabase.auth.getUser();
   if (!authUser) redirect("/login");
@@ -137,7 +137,7 @@ export default async function LearnerDashboard() {
                   {pts && (
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-gray-400">{t("points", { count: pts.points_total })}</span>
-                      <LevelBadge level={pts.level} label={tl("level", { level: pts.level })} />
+                      <LevelBadge level={pts.level} label={tRoot("Level", { level: pts.level })} />
                     </div>
                   )}
 

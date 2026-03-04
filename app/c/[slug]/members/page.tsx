@@ -13,7 +13,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
   const { slug } = await params;
   const admin = createAdminClient();
   const t = await getTranslations("Members");
-  const tl = await getTranslations("Level");
+  const tRoot = await getTranslations();
 
   const { data: community } = await admin
     .from("communities")
@@ -68,7 +68,7 @@ export default async function MembersPage({ params }: MembersPageProps) {
               </div>
               {pts && (
                 <div className="text-right shrink-0 space-y-1">
-                  <LevelBadge level={pts.level} label={tl("level", { level: pts.level })} />
+                  <LevelBadge level={pts.level} label={tRoot("Level", { level: pts.level })} />
                   <p className="text-xs text-gray-400">{t("points", { count: pts.points })}</p>
                 </div>
               )}

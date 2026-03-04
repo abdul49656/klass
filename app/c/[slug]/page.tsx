@@ -69,7 +69,7 @@ async function FeedPosts({
 async function Leaderboard({ communityId }: { communityId: string }) {
   const admin = createAdminClient();
   const t = await getTranslations("Community");
-  const tl = await getTranslations("Level");
+  const tRoot = await getTranslations();
   const { data } = await admin
     .from("points")
     .select("*, user:users!user_id(id, name, avatar_url)")
@@ -98,7 +98,7 @@ async function Leaderboard({ communityId }: { communityId: string }) {
                 {(entry as any).user.name}
               </p>
             </div>
-            <LevelBadge level={entry.level} label={tl("level", { level: entry.level })} />
+            <LevelBadge level={entry.level} label={tRoot("Level", { level: entry.level })} />
           </div>
         ))}
       </div>
